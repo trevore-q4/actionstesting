@@ -10,6 +10,8 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+concurrency: ${{ github.ref }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,5 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Deploy
+      - name: Start deploy
+        shell: bash
+        run: sleep 60s
+
+      - name: Deploy finished
         run: echo Deploying in response to ${{ github.event_name }} action ${{ github.event.action }}...

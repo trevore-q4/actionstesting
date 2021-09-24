@@ -4,11 +4,14 @@ name: Destroy
 
 # Controls when the workflow will run
 on:
+  
   pull_request:
     types: [closed]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+concurrency: ${{ github.ref }}
 
 jobs:
   destroy:
@@ -17,6 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Destroy
-        run: echo Destroying in response to ${{ github.event_name }} action ${{ github.event.action }}...
+      - name: Start destroy
+        shell: bash
+        run: sleep 30s
 
+      - name: Destroy finished
+        run: echo Destroying in response to ${{ github.event_name }} action ${{ github.event.action }}...
