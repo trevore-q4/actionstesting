@@ -12,7 +12,11 @@ concurrency:
   group: ${{ github.ref }}
 
 env:
-  IS_FEATURE: ${{ startsWith(github.ref, 'refs/heads/feature/') && !(contains(github.ref, "tests") && !(contains(github.ref, "subtask"))) }}
+  IS_FEATURE: ${{ startsWith(github.ref, 'refs/heads/feature/') && !(contains(github.ref, 'tests')) && !(contains(github.ref, 'subtask')) }}
+  REF_NAME: ${{ github.ref }}
+  IS_A_FEATURE_BRANCH: ${{ startsWith(github.ref, 'refs/heads/feature/') }}
+  NOT_A_TEST_BRANCH: ${{ !(contains(github.ref, 'tests')) }}
+  NOT_A_SUBTASK_BRANCH: ${{ !(contains(github.ref, 'subtask')) }}
 
 jobs:
   deploy:
@@ -23,7 +27,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Start deploy
-        run: echo Starting deployment
+        shell: bash
+        run: |
+          echo Starting deployment
+          printf "%q" "${{ toJSON(github) }}"
 
       - name: Deploy...
         shell: bash
