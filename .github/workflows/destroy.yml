@@ -15,7 +15,7 @@ jobs:
 
       - name: Start destroy
         shell: bash
-        run: sleep 10s
+        run: sleep 5s
 
       - name: Destroy finished
         run: echo Destroying in response to ${{ github.event_name }} action ${{ github.event.action }}...
