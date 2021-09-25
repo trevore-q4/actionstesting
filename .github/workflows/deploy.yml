@@ -12,8 +12,8 @@ concurrency:
   group: ${{ github.ref }}
 
 env:
+  BRANCH: ${{ github.head_ref || github.ref }}
   IS_FEATURE: ${{ startsWith(github.ref, 'refs/heads/feature/') && !(contains(github.ref, 'tests')) && !(contains(github.ref, 'subtask')) }}
-  REF_NAME: ${{ github.ref }}
   IS_A_FEATURE_BRANCH: ${{ startsWith(github.ref, 'refs/heads/feature/') }}
   NOT_A_TEST_BRANCH: ${{ !(contains(github.ref, 'tests')) }}
   NOT_A_SUBTASK_BRANCH: ${{ !(contains(github.ref, 'subtask')) }}
@@ -34,7 +34,7 @@ jobs:
 
       - name: Deploy...
         shell: bash
-        run: sleep 10s
+        run: sleep 5s
 
       - name: Deploy finished
         run: echo Deploying in response to ${{ github.event_name }} action ${{ github.event.action }}. IsFeature = ${{ env.IS_FEATURE }}...
