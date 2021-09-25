@@ -4,18 +4,20 @@ on:
   pull_request:
     types: [opened, synchronize, closed]
     branches:
-      - 'feature/**'
-      - '!feature/**/**'
+      - master
 
   workflow_dispatch:
 
 concurrency:
   group: ${{ github.ref }}
 
+env:
+  IS_FEATURE: ${{ startsWith(github.ref, 'refs/heads/feature/') && !(contains(github.ref, "tests") && !(contains(github.ref, "subtask"))) }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.action != 'closed'
+    if: github.event.action != 'closed' #&& env.IS_FEATURE == 'true'
     
     steps:
       - uses: actions/checkout@v2
@@ -28,7 +30,7 @@ jobs:
         run: sleep 10s
 
       - name: Deploy finished
-        run: echo Deploying in response to ${{ github.event_name }} action ${{ github.event.action }}...
+        run: echo Deploying in response to ${{ github.event_name }} action ${{ github.event.action }}. IsFeature = ${{ env.IS_FEATURE }}...
 
   destroy:
     runs-on: ubuntu-latest
