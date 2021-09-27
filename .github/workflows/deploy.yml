@@ -7,21 +7,24 @@ on:
       - master
 
   workflow_dispatch:
+    inputs:
+      action:
+        description: 'Deployment action'
+        required: false
+        default: ''
 
 concurrency:
   group: ${{ github.ref }}
 
 env:
   BRANCH: ${{ github.head_ref || github.ref }}
-  IS_FEATURE: ${{ startsWith(github.ref, 'refs/heads/feature/') && !(contains(github.ref, 'tests')) && !(contains(github.ref, 'subtask')) }}
-  IS_A_FEATURE_BRANCH: ${{ startsWith(github.ref, 'refs/heads/feature/') }}
-  NOT_A_TEST_BRANCH: ${{ !(contains(github.ref, 'tests')) }}
-  NOT_A_SUBTASK_BRANCH: ${{ !(contains(github.ref, 'subtask')) }}
+  IS_FEATURE: ${{ startsWith(github.head_ref, 'feature/') && !(contains(github.head_ref, 'tests')) && !(contains(github.head_ref, 'subtask')) }}
+  ACTION: ${{ inputs.action || github.event.action }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.action != 'closed' #&& env.IS_FEATURE == 'true'
+    if:  env.ACTION != 'closed' #&& env.IS_FEATURE == 'true'
     
     steps:
       - uses: actions/checkout@v2
@@ -41,7 +44,7 @@ jobs:
 
   destroy:
     runs-on: ubuntu-latest
-    if: github.event.action == 'closed'
+    if: env.ACTION == 'closed'
 
     steps:
       - name: Start destroy
