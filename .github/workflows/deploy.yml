@@ -4,27 +4,50 @@ on:
   pull_request:
     types: [opened, synchronize, closed]
     branches:
-      - master
+      - develop
 
   workflow_dispatch:
     inputs:
       action:
         description: 'Deployment action'
         required: false
-        default: ''
 
 concurrency:
   group: ${{ github.ref }}
 
 env:
   BRANCH: ${{ github.head_ref || github.ref }}
-  IS_FEATURE: ${{ startsWith(github.head_ref, 'feature/') && !(contains(github.head_ref, 'tests')) && !(contains(github.head_ref, 'subtask')) }}
-  ACTION: ${{ inputs.action || github.event.action }}
+  #IS_FEATURE: ${{ startsWith(github.head_ref, 'feature/') && !(contains(github.head_ref, 'tests')) && !(contains(github.head_ref, 'subtask')) }}
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    outputs:
+      action: ${{ steps.setup.outputs.action }}
+      environment: ${{ steps.setup.outputs.environment }}
+
+    steps:
+      - id: setup
+        name: Setup variables
+        shell: pwsh
+        run: |
+          $regexResult = [Regex]::Match($env:BRANCH, "feature/([\w-]+)")
+          
+          if ($regexResult.Success) {
+            $environment = $regexResult.Groups[1].Value.ToLower().Replace('-', '')
+            $action = $env:INPUT_ACTION ?? $env:GITHUB_EVENT_NAME ?? 'deploy'
+
+            Write-Output "Action is $action"
+
+            echo "::set-output name=environment::$environment"
+            echo "::set-output name=action::$action"
+          }
+
   deploy:
     runs-on: ubuntu-latest
-    if:  env.ACTION != 'closed' #&& env.IS_FEATURE == 'true'
+    needs: setup
+    if: needs.setup.outputs.action == 'deploy'
     
     steps:
       - uses: actions/checkout@v2
@@ -44,14 +67,15 @@ jobs:
 
   destroy:
     runs-on: ubuntu-latest
-    if: env.ACTION == 'closed'
+    needs: setup
+    if: needs.setup.outputs.action == 'destroy'
 
     steps:
-      - name: Start destroy
-        run: echo Calling GitHub API to invoke destroy workflow
+      - uses: actions/checkout@v2
 
-      - name: Trigger destroy
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Destroy
-          token: ${{ secrets.DISPATCH_TOKEN }}
+      - name: Start destroy
+        shell: bash
+        run: sleep 5s
+
+      - name: Destroy finished
+        run: echo Destroying in response to ${{ github.event_name }} action ${{ github.event.action }}...

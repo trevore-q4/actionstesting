@@ -1,21 +1,18 @@
 name: Destroy
 
-on:
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.ref }}
+on: workflow_dispatch
 
 jobs:
   destroy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
       - name: Start destroy
-        shell: bash
-        run: sleep 5s
+        run: echo Calling GitHub API to invoke destroy
 
-      - name: Destroy finished
-        run: echo Destroying in response to ${{ github.event_name }} action ${{ github.event.action }}...
+      - name: Trigger destroy
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Deploy
+          token: ${{ secrets.DISPATCH_TOKEN }}
+          inputs: '{ "action": "destroy" }'
