@@ -1,4 +1,4 @@
-name: Auto Label Feature PR
+name: AutoLabel
 
 on:
   pull_request:
