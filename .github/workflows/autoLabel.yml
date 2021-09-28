@@ -1,0 +1,29 @@
+name: Auto Label Feature PR
+
+on:
+  pull_request:
+    types: [opened]
+    branches:
+      - develop
+
+jobs:
+  label_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: setup
+        name: Setup variables
+        shell: pwsh
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: |
+          $regexResult = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
+          $isFeatureBranch = $regexResult.Success
+
+          echo "::set-output name=is_feature_branch::$isFeatureBranch"
+
+    - name: Label PR
+      if: steps.setup.outputs.is_feature_branch == 'true'
+      uses: ffittschen/pr-branch-labeler@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
