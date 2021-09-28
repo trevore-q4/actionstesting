@@ -2,22 +2,12 @@ name: Deploy
 
 on:
   pull_request:
-    types: [opened, synchronize, closed]
+    types: [opened, reopened, labeled, synchronize, closed, unlabeled]
     branches:
       - develop
 
-  workflow_dispatch:
-    inputs:
-      action:
-        description: 'Deployment action'
-        required: false
-
 concurrency:
   group: ${{ github.ref }}
-
-env:
-  BRANCH: ${{ github.head_ref || github.ref }}
-  #IS_FEATURE: ${{ startsWith(github.head_ref, 'feature/') && !(contains(github.head_ref, 'tests')) && !(contains(github.head_ref, 'subtask')) }}
 
 jobs:
   setup:
@@ -31,18 +21,29 @@ jobs:
       - id: setup
         name: Setup variables
         shell: pwsh
+        env:
+          ACTION: ${{ github.event.action }}
+          BRANCH: ${{ github.head_ref }}
+          REF: ${{ github.ref }}
         run: |
-          $regexResult = [Regex]::Match($env:BRANCH, "feature/([\w-]+)")
+          Write-Output "Running setup with action $env:ACTION, branch $env:BRANCH, and ref $env:REF"
+
+          $regexResult = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
           
           if ($regexResult.Success) {
-            $environment = $regexResult.Groups[1].Value.ToLower().Replace('-', '')
-            $action = $env:INPUT_ACTION ?? $env:GITHUB_EVENT_NAME ?? 'deploy'
-
-            Write-Output "Action is $action"
-
-            echo "::set-output name=environment::$environment"
-            echo "::set-output name=action::$action"
+            $environment = "qp" + $regexResult.Matches[0].Groups[1].Value  
+          } else {
+            $environment = "pr"
           }
+
+          if (@('unlabeled', 'closed') -contains $env:ACTION) {
+            $action = 'destroy'
+          } else {
+            $action = 'deploy'
+          }
+
+          echo "::set-output name=environment::$environment"
+          echo "::set-output name=action::$action"
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,18 +53,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Start deploy
+      - name: Deploy
         shell: bash
         run: |
           echo Starting deployment
           printf "%q" "${{ toJSON(github) }}"
-
-      - name: Deploy...
-        shell: bash
-        run: sleep 5s
-
-      - name: Deploy finished
-        run: echo Deploying in response to ${{ github.event_name }} action ${{ github.event.action }}. IsFeature = ${{ env.IS_FEATURE }}...
 
   destroy:
     runs-on: ubuntu-latest
@@ -73,9 +67,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Start destroy
-        shell: bash
-        run: sleep 5s
-
-      - name: Destroy finished
-        run: echo Destroying in response to ${{ github.event_name }} action ${{ github.event.action }}...
+      - name: Destroy
+        run: |
+          printf "%q" "${{ toJSON(github) }}"
