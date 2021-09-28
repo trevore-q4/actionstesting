@@ -47,6 +47,7 @@ jobs:
           Write-Output "Environment: $environment"
           Write-Output "isLabelAction: $isLabelAction"
           Write-Output "hasLabel: $hasLabel"
+          Write-Output "isFeatureBranch: $isFeatureBranch"
 
           if ($isLabelAction -and ($env:LABEL_NAME -ne 'environment')) {
             $action = 'none'
@@ -54,6 +55,8 @@ jobs:
             $action = 'destroy'
           } elseif ($hasLabel -or $isLabelAction -or ($isFeatureBranch -and $env:ACTION -eq 'opened')) {
             $action = 'deploy'
+          } else {
+            Write-Output "else condition"
           }
 
           echo "::set-output name=environment::$environment"
