@@ -24,18 +24,13 @@ jobs:
         env:
           ACTION: ${{ github.event.action }}
           BRANCH: ${{ github.head_ref }}
-          REF: ${{ github.ref }}
           PR_NUMBER: ${{ github.event.number }}
           LABEL_NAME: ${{ github.event.label.name }}
           HAS_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'environment') }}
         run: |
-          Write-Output "Running setup with action $env:ACTION, branch $env:BRANCH, and ref $env:REF and pr number $env:PR_NUMBER"
-          Write-Output "Has label: $env:HAS_LABEL"
-
           $regexResult = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
-          $isFeatureBranch = $regexResult.Success
-          
-          if ($isFeatureBranch) {
+
+          if ($regexResult) {
             $environment = "qp" + $regexResult.Matches[0].Groups[1].Value  
           } else {
             $environment = "pr" + $env:PR_NUMBER
