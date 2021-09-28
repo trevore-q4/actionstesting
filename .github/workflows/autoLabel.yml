@@ -17,8 +17,13 @@ jobs:
         env:
           BRANCH: ${{ github.head_ref }}
         run: |
-          $regexResult = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
-          $isFeatureBranch = $regexResult.Success.ToString().ToLower()
+          $result = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
+          
+          if ($result) {
+            $isFeatureBranch = 'true'
+          } else {
+            $isFeatureBranch = 'false'
+          }
 
           echo "::set-output name=is_feature_branch::$isFeatureBranch"
 
