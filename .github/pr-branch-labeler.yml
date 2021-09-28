@@ -1,2 +1,2 @@
 environment:
-  head: "feature/*"
+  head: "*"
