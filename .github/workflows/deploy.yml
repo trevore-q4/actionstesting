@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   pull_request:
-    types: [opened, reopened, labeled, synchronize, closed, unlabeled]
+    types: [reopened, labeled, synchronize, closed, unlabeled]
     branches:
       - develop
 
@@ -50,11 +50,9 @@ jobs:
 
           if ($isLabelAction -and ($env:LABEL_NAME -ne 'environment')) {
             $action = 'none'
-          } elseif ($env:ACTION -eq 'unlabeled') {
+          } elseif (($env:ACTION -eq 'unlabeled') -or ($env:ACTION -eq 'closed' -and $hasLabel)) {
             $action = 'destroy'
-          } elseif ($env:ACTION -eq 'closed' -and $hasLabel) {
-            $action = 'destroy'
-          } elseif ($isFeatureBranch -or ) {
+          } elseif ($hasLabel) {
             $action = 'deploy'
           }
 
