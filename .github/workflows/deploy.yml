@@ -40,14 +40,17 @@ jobs:
           $destroyActions = @('unlabeled', 'closed')
 
           $isLabelAction = $labelActions -contains $env:ACTION
-          $isDestroyAciton = $destroyActions -contains $env:ACTION
           $hasLabel = $env:HAS_LABEL -eq 'true'
+
+          Write-Output "Environment: $environment"
+          Write-Output "isLabelAction: $isLabelAction"
+          Write-Output "hasLabel: $hasLabel"
 
           if ($isLabelAction -and ($env:LABEL_NAME -ne 'environment')) {
             $action = 'none'
           } elseif (($env:ACTION -eq 'unlabeled') -or ($env:ACTION -eq 'closed' -and $hasLabel)) {
             $action = 'destroy'
-          } elseif ($hasLabel) {
+          } elseif ($hasLabel -or $isLabelAction) {
             $action = 'deploy'
           }
 

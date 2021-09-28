@@ -29,6 +29,6 @@ jobs:
 
       - name: Label PR
         if: steps.setup.outputs.is_feature_branch == 'true'
-        uses: ffittschen/pr-branch-labeler@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        uses: TimonVS/pr-labeler-action@v3
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
