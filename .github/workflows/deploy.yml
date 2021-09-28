@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   pull_request:
-    types: [reopened, labeled, synchronize, closed, unlabeled]
+    types: [opened, reopened, labeled, synchronize, closed, unlabeled]
     branches:
       - develop
 
@@ -29,9 +29,11 @@ jobs:
           HAS_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'environment') }}
         run: |
           $regexResult = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
+          $isFeatureBranch = false
 
           if ($regexResult) {
-            $environment = "qp" + $regexResult.Matches[0].Groups[1].Value  
+            $environment = "qp" + $regexResult.Matches[0].Groups[1].Value
+            $isFeatureBranch = true
           } else {
             $environment = "pr" + $env:PR_NUMBER
           }
@@ -45,13 +47,16 @@ jobs:
           Write-Output "Environment: $environment"
           Write-Output "isLabelAction: $isLabelAction"
           Write-Output "hasLabel: $hasLabel"
+          Write-Output "isFeatureBranch: $isFeatureBranch"
 
           if ($isLabelAction -and ($env:LABEL_NAME -ne 'environment')) {
             $action = 'none'
           } elseif (($env:ACTION -eq 'unlabeled') -or ($env:ACTION -eq 'closed' -and $hasLabel)) {
             $action = 'destroy'
-          } elseif ($hasLabel -or $isLabelAction) {
+          } elseif ($hasLabel -or $isLabelAction -or ($isFeatureBranch -and $env:ACTION -eq 'opened')) {
             $action = 'deploy'
+          } else {
+            Write-Output "else condition"
           }
 
           echo "::set-output name=environment::$environment"
