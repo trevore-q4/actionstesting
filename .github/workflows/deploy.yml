@@ -65,13 +65,9 @@ jobs:
     if: needs.setup.outputs.action == 'deploy'
     
     steps:
-      - uses: actions/checkout@v2
-
       - name: Deploy
-        shell: bash
         run: |
-          echo Starting deployment
-          printf "%q" "${{ toJSON(github) }}"
+          echo Deploying
 
   destroy:
     runs-on: ubuntu-latest
@@ -79,8 +75,6 @@ jobs:
     if: needs.setup.outputs.action == 'destroy'
 
     steps:
-      - uses: actions/checkout@v2
-
       - name: Destroy
         run: |
-          printf "%q" "${{ toJSON(github) }}"
+          echo Destroying
