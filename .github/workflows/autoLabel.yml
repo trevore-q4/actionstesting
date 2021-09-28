@@ -22,8 +22,8 @@ jobs:
 
           echo "::set-output name=is_feature_branch::$isFeatureBranch"
 
-    - name: Label PR
-      if: steps.setup.outputs.is_feature_branch == 'true'
-      uses: ffittschen/pr-branch-labeler@v1
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Label PR
+        if: steps.setup.outputs.is_feature_branch == 'true'
+        uses: ffittschen/pr-branch-labeler@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
