@@ -33,8 +33,9 @@ jobs:
           Write-Output "Has label: $env:HAS_LABEL"
 
           $regexResult = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
+          $isFeatureBranch = $regexResult.Success
           
-          if ($regexResult.Success) {
+          if ($isFeatureBranch) {
             $environment = "qp" + $regexResult.Matches[0].Groups[1].Value  
           } else {
             $environment = "pr" + $env:PR_NUMBER
@@ -43,11 +44,17 @@ jobs:
           $labelActions = @('labeled','unlabeled')
           $destroyActions = @('unlabeled', 'closed')
 
-          if ($labelActions -contains $env:ACTION -and $env:LABEL_NAME -ne 'environment') {
+          $isLabelAction = $labelActions -contains $env:ACTION
+          $isDestroyAciton = $destroyActions -contains $env:ACTION
+          $hasLabel = $env:HAS_LABEL -eq 'true'
+
+          if ($isLabelAction -and ($env:LABEL_NAME -ne 'environment')) {
             $action = 'none'
-          } elseif ($destroyActions -contains $env:ACTION) {
+          } elseif ($env:ACTION -eq 'unlabeled') {
             $action = 'destroy'
-          } else {
+          } elseif ($env:ACTION -eq 'closed' -and $hasLabel) {
+            $action = 'destroy'
+          } elseif ($isFeatureBranch -or ) {
             $action = 'deploy'
           }
 
