@@ -28,12 +28,10 @@ jobs:
           LABEL_NAME: ${{ github.event.label.name }}
           HAS_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'environment') }}
         run: |
-          $regexResult = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
-          $isFeatureBranch = false
+          $featureBranchRegex = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
 
-          if ($regexResult) {
-            $environment = "qp" + $regexResult.Matches[0].Groups[1].Value
-            $isFeatureBranch = true
+          if ($featureBranchRegex) {
+            $environment = "qp" + $featureBranchRegex.Matches[0].Groups[1].Value
           } else {
             $environment = "pr" + $env:PR_NUMBER
           }
@@ -44,16 +42,11 @@ jobs:
           $isLabelAction = $labelActions -contains $env:ACTION
           $hasLabel = $env:HAS_LABEL -eq 'true'
 
-          Write-Output "Environment: $environment"
-          Write-Output "isLabelAction: $isLabelAction"
-          Write-Output "hasLabel: $hasLabel"
-          Write-Output "isFeatureBranch: $isFeatureBranch"
-
           if ($isLabelAction -and ($env:LABEL_NAME -ne 'environment')) {
             $action = 'none'
           } elseif (($env:ACTION -eq 'unlabeled') -or ($env:ACTION -eq 'closed' -and $hasLabel)) {
             $action = 'destroy'
-          } elseif ($hasLabel -or $isLabelAction -or ($isFeatureBranch -and $env:ACTION -eq 'opened')) {
+          } elseif ($hasLabel -or $isLabelAction -or ($featureBranchRegex -and $env:ACTION -eq 'opened')) {
             $action = 'deploy'
           } else {
             Write-Output "else condition"
