@@ -50,7 +50,7 @@ jobs:
             $action = 'none'
           } elseif (($env:ACTION -eq 'unlabeled') -or ($env:ACTION -eq 'closed' -and $hasLabel)) {
             $action = 'destroy'
-          } elseif ($hasLabel) {
+          } elseif ($hasLabel -or $isLabelAction) {
             $action = 'deploy'
           }
 
