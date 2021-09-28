@@ -1,4 +1,4 @@
-name: AutoLabel
+name: Auto Label Feature PR
 
 on:
   pull_request:
@@ -18,7 +18,7 @@ jobs:
           BRANCH: ${{ github.head_ref }}
         run: |
           $regexResult = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
-          $isFeatureBranch = $regexResult.Success
+          $isFeatureBranch = $regexResult.Success.ToString().ToLower()
 
           echo "::set-output name=is_feature_branch::$isFeatureBranch"
 
