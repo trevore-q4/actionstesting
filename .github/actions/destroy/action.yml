@@ -14,3 +14,5 @@ runs:
       shell: bash
       run: |
         echo Destroying ${{ inputs.environment_name }}
+        sleep 30s
+        echo Destroy finished
