@@ -60,7 +60,7 @@ jobs:
     name: Deploy
     needs: setup
     if: needs.setup.outputs.action == 'deploy'
-    uses: deploy.yml@${{ github.head_ref }}
+    uses:  trevore-q4/actionstesting/.github/workflows/deploy.yml@${{ github.head_ref }}
     with:
       environment_name: ${{ env.environment }}
 
@@ -69,6 +69,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     if: needs.setup.outputs.action == 'destroy'
-    uses: destroy.yml@${{ github.head_ref }}
+    uses: trevore-q4/actionstesting/.github/workflows/destroy.yml@${{ github.head_ref }}
     with:
       environment_name: ${{ env.environment }}
