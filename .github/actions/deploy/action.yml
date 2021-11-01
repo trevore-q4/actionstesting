@@ -1,0 +1,18 @@
+name: Deploy
+description: Builds and deploys to an environment, and creates the environment if it doesn't exist
+
+inputs:
+  environment_name:
+    description: 'Environment to deploy'
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run deploy
+      shell: bash
+      run: |
+        echo Deploying to ${{ inputs.environment_name }}
+        sleep 2m
+        echo Deployment finished
