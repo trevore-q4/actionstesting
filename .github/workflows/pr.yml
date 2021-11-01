@@ -59,7 +59,7 @@ jobs:
         shell: bash
         run: |
           echo Building...
-          sleep 60s
+          sleep 5s
           echo Build finished
 
   deploy:
