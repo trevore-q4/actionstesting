@@ -56,6 +56,14 @@ jobs:
           echo "::set-output name=environment::$environment"
           echo "::set-output name=action::$action"
 
+      - id: build
+        name: Build
+        shell: bash
+        run: |
+          echo Building...
+          sleep 60s
+          echo Build finished
+
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
