@@ -1,19 +1,19 @@
-name: Deploy
+name: Destroy
 
 on:
   workflow_call:
     inputs:
       environment_name:
-        description: 'Environment to deploy'
+        description: 'Environment to destroy'
         required: true
         type: string
 
 jobs:
-  deploy:
-    name: Deploy
+  destroy:
+    name: Destroy
     runs-on: ubuntu-latest
     
     steps:
-      - name: Run deploy
+      - name: Run destroy
         run: |
-          echo Deploying to ${{ inputs.environment_name }}
+          echo Destroying ${{ inputs.environment_name }}
