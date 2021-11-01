@@ -11,7 +11,6 @@ concurrency:
 
 jobs:
   setup:
-    name: Setup
     runs-on: ubuntu-latest
 
     outputs:
@@ -57,18 +56,27 @@ jobs:
           echo "::set-output name=action::$action"
 
   deploy:
-    name: Deploy
+    runs-on: ubuntu-latest
     needs: setup
     if: needs.setup.outputs.action == 'deploy'
-    uses:  trevore-q4/actionstesting/.github/workflows/deploy.yml@${{ github.head_ref }}
-    with:
-      environment_name: ${{ env.environment }}
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Deploy
+        uses: ./.github/actions/deploy
+        with:
+          environment_name: ${{ needs.setup.outputs.environment }}
 
   destroy:
-    name: Destroy
     runs-on: ubuntu-latest
     needs: setup
     if: needs.setup.outputs.action == 'destroy'
-    uses: trevore-q4/actionstesting/.github/workflows/destroy.yml@${{ github.head_ref }}
-    with:
-      environment_name: ${{ env.environment }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Destroy
+        uses: ./.github/actions/destroy
+        with:
+          environment_name: ${{ needs.setup.outputs.environment }}

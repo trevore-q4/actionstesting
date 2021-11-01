@@ -1,0 +1,16 @@
+name: Destroy
+description: Destroys an environment
+
+inputs:
+  environment_name:
+    description: 'Environment to destroy'
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run destroy
+      shell: bash
+      run: |
+        echo Destroying ${{ inputs.environment_name }}
