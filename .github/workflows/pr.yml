@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.ref }}-build
-      cancel-in-progress: true
+      cancel-in-progress: ${{ github.event.action != 'closed' && github.event.action != 'unlabeled' }}
 
     outputs:
       action: ${{ steps.setup.outputs.action }}
