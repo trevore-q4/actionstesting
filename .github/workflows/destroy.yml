@@ -6,14 +6,12 @@ on:
     branches:
       - develop
 
+concurrency: qp101
+
 jobs:
   deploy:
     name: Destroy
     runs-on: ubuntu-latest
-    environment: qp101
-    concurrency:
-      group: qp101
-      cancel-in-progress: false
     
     steps:
       - name: Destroy

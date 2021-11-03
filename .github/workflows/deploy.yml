@@ -6,15 +6,12 @@ on:
     branches:
       - develop
 
+concurrency: qp101
+
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: qp101
-    concurrency:
-      group: qp101
-      cancel-in-progress: false
-    
     steps:
       - name: Deploy
         shell: bash
