@@ -6,7 +6,7 @@ on:
     branches:
       - develop
 
-concurrency: qp101
+concurrency: ${{ github.ref }}
 
 jobs:
   deploy:
