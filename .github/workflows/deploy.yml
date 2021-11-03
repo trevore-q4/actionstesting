@@ -1,0 +1,24 @@
+name: Deploy
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: qp101
+    concurrency:
+      group: qp101
+      cancel-in-progress: false
+    
+    steps:
+      - name: Deploy
+        shell: bash
+        run: |
+          echo Deploying...
+          sleep 1m
+          echo Deploy finished

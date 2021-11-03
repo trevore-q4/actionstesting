@@ -1,0 +1,24 @@
+name: Destroy
+
+on:
+  pull_request:
+    types: [closed, unlabeled]
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: Destroy
+    runs-on: ubuntu-latest
+    environment: qp101
+    concurrency:
+      group: qp101
+      cancel-in-progress: false
+    
+    steps:
+      - name: Destroy
+        shell: bash
+        run: |
+          echo Destroying...
+          sleep 1m
+          echo Destroy finished
