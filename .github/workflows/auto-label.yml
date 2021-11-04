@@ -1,0 +1,34 @@
+name: Auto-label
+
+on:
+  pull_request:
+    types: [opened]
+    branches:
+      - develop
+
+jobs:
+  label_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: setup
+        name: Setup variables
+        shell: pwsh
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: |
+          $result = $env:BRANCH | Select-String -Pattern "^feature\/QP-([0-9]+)$"
+          
+          if ($result) {
+            $isFeatureBranch = 'true'
+          } else {
+            $isFeatureBranch = 'false'
+          }
+
+          echo "::set-output name=is_feature_branch::$isFeatureBranch"
+
+      - name: Label PR
+        if: steps.setup.outputs.is_feature_branch == 'true'
+        uses: TimonVS/pr-labeler-action@v3
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

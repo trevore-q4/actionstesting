@@ -5,15 +5,14 @@ on:
     types: [closed, unlabeled]
     branches:
       - develop
-  workflow_dispatch:
 
 jobs:
   deploy:
     name: Destroy
     runs-on: ubuntu-latest
-    environment: qp101
+    environment: qp102
     concurrency:
-      group: qp101
+      group: ${{ github.ref }}
       cancel-in-progress: false
 
     steps:

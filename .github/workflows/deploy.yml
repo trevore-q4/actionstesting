@@ -10,9 +10,9 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: qp101
+    environment: qp102
     concurrency:
-      group: qp101
+      group: ${{ github.ref }}
       cancel-in-progress: false
 
     steps:
