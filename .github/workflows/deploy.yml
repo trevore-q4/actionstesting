@@ -7,6 +7,21 @@ on:
       - develop
 
 jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Build
+        shell: bash
+        run: |
+          echo Hello World > output.txt
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: output
+
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -16,9 +31,14 @@ jobs:
       cancel-in-progress: false
 
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: output
+
       - name: Deploy
         shell: bash
         run: |
-          echo Deploying...
+          echo Deploying using artifacts... $(cat output.txt)
           sleep 1m
           echo Deploy finished
