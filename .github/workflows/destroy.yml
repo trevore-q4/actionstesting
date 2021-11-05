@@ -26,5 +26,5 @@ jobs:
       - uses: strumwolf/delete-deployment-environment@v2
         with:
           # ⚠️ The provided token needs permission for admin write:org
-          token: ${{ github.token }}
+          token: ${{ secrets.TOKEN }}
           environment: qp103
