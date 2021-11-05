@@ -42,5 +42,5 @@ jobs:
         shell: bash
         run: |
           echo Deploying using artifacts... $(cat output.txt)
-          sleep 1m
+          sleep 10s
           echo Deploy finished

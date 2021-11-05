@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           echo Destroying...
-          sleep 1m
+          sleep 10s
           echo Destroy finished
 
       - uses: strumwolf/delete-deployment-environment@v2
