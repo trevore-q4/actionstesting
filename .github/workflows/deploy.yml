@@ -21,6 +21,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: output
+          path: output.txt
 
   deploy:
     name: Deploy
