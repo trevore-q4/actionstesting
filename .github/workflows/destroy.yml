@@ -22,3 +22,9 @@ jobs:
           echo Destroying...
           sleep 1m
           echo Destroy finished
+
+      - uses: strumwolf/delete-deployment-environment@v2
+        with:
+          # ⚠️ The provided token needs permission for admin write:org
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: qp103
