@@ -14,9 +14,9 @@ runs:
       uses: q4mobile/branch-env-vars@v1.0.3
       with:
         bevOverwrite: true
-        TF_VAR_is_ephemeral: |
+        TF_VAR_IS_EPHEMERAL: |
           !default:${{ inputs.is_ephemeral }}
 
     - shell: bash
       run: |
-        echo TF_VAR_is_ephemeral = $TF_VAR_is_ephemeral
+        echo TF_VAR_is_ephemeral = $TF_VAR_IS_EPHEMERAL
