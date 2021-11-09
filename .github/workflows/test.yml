@@ -14,9 +14,9 @@ jobs:
       - name: Test not ephemeral
         uses: ./.github/actions/test
         with:
-          is_ephemeral: 'false'
+          is_ephemeral: false
 
       - name: Test ephemeral
         uses: ./.github/actions/test
         with:
-          is_ephemeral: 'true'
+          is_ephemeral: true
