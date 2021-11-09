@@ -16,7 +16,11 @@ jobs:
       TF_VAR_IS_EPHEMERAL: ${{ github.event.inputs.is_ephemeral }}
   
     steps:
-      - name: Test
-        shell: bash
-        run: |
-          echo $TF_VAR_IS_EPHEMERAL
+      - uses: actions/checkout@v2
+
+      - id: test
+        name: Test
+        uses: ./.github/actions/deploy
+        with:
+          is_ephemeral: false
+

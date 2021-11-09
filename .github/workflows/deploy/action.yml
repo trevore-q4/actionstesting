@@ -1,0 +1,22 @@
+name: Deploy
+description: Builds and deploys to an environment, and creates the environment if it doesn't exist
+
+inputs:
+  is_ephemeral:
+    description: 'Is an ephemeral environment?'
+    required: true
+    type: boolean
+
+runs:
+  using: "composite"
+  steps:
+    - name: Environment variables
+      uses: q4mobile/branch-env-vars@v1.0.3
+      with:
+        bevOverwrite: true
+        TF_VAR_is_ephemeral: |
+          !default:${{ inputs.is_ephemeral }}
+
+    - shell: bash
+      run: |
+        echo TF_VAR_is_ephemeral = $TF_VAR_is_ephemeral
