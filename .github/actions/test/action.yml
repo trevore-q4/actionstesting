@@ -10,11 +10,18 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - shell: bash
-      env:
-        IS_EPHEMERAL: ${{ inputs.is_ephemeral }}
-      run: |
-        echo "TF_VAR_is_ephemeral=$IS_EPHEMERAL" >> $GITHUB_ENV
+    # - shell: bash
+    #   env:
+    #     IS_EPHEMERAL: ${{ inputs.is_ephemeral }}
+    #   run: |
+    #     echo "TF_VAR_is_ephemeral=$IS_EPHEMERAL" >> $GITHUB_ENV
+
+    - name: Environment variables 
+      uses: q4mobile/branch-env-vars@v1.0.3 
+      with: 
+        bevOverwrite: true 
+        TF_VAR_is_ephemeral: | 
+          !default:${{ inputs.is_ephemeral }} 
 
     - shell: bash
       run: |
