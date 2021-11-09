@@ -5,15 +5,13 @@ on:
     types: [closed, unlabeled]
     branches:
       - develop
-  workflow_dispatch:
 
 jobs:
   deploy:
     name: Destroy
     runs-on: ubuntu-latest
-    environment: qp101
     concurrency:
-      group: qp101
+      group: ${{ github.ref }}
       cancel-in-progress: false
 
     steps:
@@ -21,5 +19,11 @@ jobs:
         shell: bash
         run: |
           echo Destroying...
-          sleep 1m
+          sleep 10s
           echo Destroy finished
+
+      - uses: strumwolf/delete-deployment-environment@v2
+        with:
+          # ⚠️ The provided token needs permission for admin write:org
+          token: ${{ secrets.TOKEN }}
+          environment: qp103

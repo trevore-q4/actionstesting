@@ -1,24 +1,22 @@
 name: Deploy
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize, labeled]
-    branches:
-      - develop
+  workflow_dispatch:
+    inputs:
+      is_ephemeral:
+        description: 'Is ephemeral'
+        required: true
+        default: false
 
 jobs:
-  deploy:
-    name: Deploy
+  build:
+    name: Test
     runs-on: ubuntu-latest
-    environment: qp101
-    concurrency:
-      group: qp101
-      cancel-in-progress: false
-
+    env:
+      TF_VAR_IS_EPHEMERAL: ${{ github.event.inputs.is_ephemeral }}
+  
     steps:
-      - name: Deploy
+      - name: Test
         shell: bash
         run: |
-          echo Deploying...
-          sleep 1m
-          echo Deploy finished
+          echo $TF_VAR_IS_EPHEMERAL
