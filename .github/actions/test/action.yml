@@ -22,9 +22,9 @@ runs:
         echo TF_VAR_is_ephemeral = $TF_VAR_IS_EPHEMERAL
 
     - shell: bash
-      if: ${{ inputs.is_ephemeral == true }}
+      if: ${{ inputs.is_ephemeral }}
       run: echo is an ephemeral environment
 
     - shell: bash
-      if: ${{ inputs.is_ephemeral == false }}
+      if: ${{ !inputs.is_ephemeral }}
       run: echo is not an ephemeral environment
