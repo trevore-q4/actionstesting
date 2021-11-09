@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Test
+  test_not_ephemeral:
+    name: Test Not Ephemeral
     runs-on: ubuntu-latest
   
     steps:
@@ -14,9 +14,16 @@ jobs:
       - name: Test not ephemeral
         uses: ./.github/actions/test
         with:
-          is_ephemeral: 'false'
+          is_ephemeral: false
+
+  test_ephemeral:
+    name: Test Ephemeral
+    runs-on: ubuntu-latest
+  
+    steps:
+      - uses: actions/checkout@v2
 
       - name: Test ephemeral
         uses: ./.github/actions/test
         with:
-          is_ephemeral: 'true'
+          is_ephemeral: true

@@ -5,18 +5,11 @@ inputs:
   is_ephemeral:
     description: 'Is an ephemeral environment?'
     required: true
-    type: string
+    type: boolean
 
 runs:
   using: "composite"
   steps:
-    # - name: Environment variables
-    #   uses: q4mobile/branch-env-vars@v1.0.3
-    #   with:
-    #     bevOverwrite: true
-    #     TF_VAR_is_ephemeral: |
-    #       !default:${{ inputs.is_ephemeral }}
-
     - shell: bash
       env:
         IS_EPHEMERAL: ${{ inputs.is_ephemeral }}
