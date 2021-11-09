@@ -1,5 +1,5 @@
-name: Deploy
-description: Builds and deploys to an environment, and creates the environment if it doesn't exist
+name: Test
+description: Test action
 
 inputs:
   is_ephemeral:
