@@ -19,4 +19,4 @@ jobs:
       - name: Test ephemeral
         uses: ./.github/actions/test
         with:
-          is_ephemeral: true
+          is_ephemeral: 'hello'
