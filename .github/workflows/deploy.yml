@@ -1,46 +1,22 @@
 name: Deploy
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize, labeled]
-    branches:
-      - develop
+  workflow_dispatch:
+    inputs:
+      is_ephemeral:
+        description: 'Is ephemeral'
+        required: true
+        default: false
 
 jobs:
   build:
-    name: Build
+    name: Test
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_IS_EPHEMERAL: ${{ github.event.inputs.is_ephemeral }}
   
     steps:
-      - name: Build
+      - name: Test
         shell: bash
         run: |
-          echo Hello World > output.txt
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: output
-          path: output.txt
-
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: build
-    environment: qp103
-    concurrency:
-      group: ${{ github.ref }}
-      cancel-in-progress: false
-
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: output
-
-      - name: Deploy
-        shell: bash
-        run: |
-          echo Deploying using artifacts... $(cat output.txt)
-          sleep 10s
-          echo Deploy finished
+          echo $TF_VAR_IS_EPHEMERAL
