@@ -19,7 +19,7 @@ runs:
 
     - shell: bash
       run: |
-        echo "TF_VAR_IS_EPHEMERAL=true" >> $GITHUB_ENV
+        echo "TF_VAR_IS_EPHEMERAL=${{ inputs.is_ephemeral }}" >> $GITHUB_ENV
 
     - shell: bash
       run: |
