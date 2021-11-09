@@ -18,7 +18,7 @@ runs:
 
     - shell: bash
       run: |
-        echo TF_VAR_is_ephemeral = $TF_VAR_IS_EPHEMERAL
+        echo TF_VAR_is_ephemeral = $TF_VAR_is_ephemeral
 
     - shell: bash
       if: inputs.is_ephemeral == 'true'
