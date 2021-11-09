@@ -2,11 +2,6 @@ name: Test
 
 on:
   workflow_dispatch:
-    inputs:
-      is_ephemeral:
-        description: 'Is ephemeral'
-        required: true
-        default: false
 
 jobs:
   build:
@@ -18,8 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - id: test
-        name: Test
+      - name: Test not ephemeral
         uses: ./.github/actions/test
         with:
-          is_ephemeral: inputs.is_ephemeral
+          is_ephemeral: false
+
+      - name: Test ephemeral
+        uses: ./.github/actions/test
+        with:
+          is_ephemeral: true
