@@ -18,8 +18,10 @@ runs:
     #       !default:${{ inputs.is_ephemeral }}
 
     - shell: bash
+      env:
+        IS_EPHEMERAL: ${{ inputs.is_ephemeral }}
       run: |
-        echo "TF_VAR_IS_EPHEMERAL=${{ inputs.is_ephemeral }}" >> $GITHUB_ENV
+        echo "TF_VAR_IS_EPHEMERAL=$IS_EPHEMERAL" >> $GITHUB_ENV
 
     - shell: bash
       run: |
