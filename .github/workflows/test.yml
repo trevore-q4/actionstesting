@@ -7,8 +7,6 @@ jobs:
   build:
     name: Test
     runs-on: ubuntu-latest
-    env:
-      TF_VAR_IS_EPHEMERAL: ${{ github.event.inputs.is_ephemeral }}
   
     steps:
       - uses: actions/checkout@v2
