@@ -1,4 +1,8 @@
-import * as core from "@actions/core";
+import {
+  debug,
+  exportVariable,
+  setFailed,
+} from "@actions/core";
 
 function parseEnvVars(envVars: NodeJS.ProcessEnv): Array<[string, unknown]> {
   return Object.entries(envVars)
@@ -15,14 +19,14 @@ try {
   const vars = parseEnvVars(process.env).forEach(
     ([name, value]) => {
       if (!value) {
-          core.exportVariable(name, "");
-          core.debug(`Exporting ${name} with an empty value`);
+          exportVariable(name, "");
+          debug(`Exporting ${name} with an empty value`);
       } else {
-        core.exportVariable(name, value);
-        core.debug(`Exporting ${name} with value ${value}`);
+        exportVariable(name, value);
+        debug(`Exporting ${name} with value ${value}`);
       }
     }
   );
 } catch (e) {
-  core.setFailed(`Failed to parse environment variables: ${e}}`);
+  setFailed(`Failed to parse environment variables: ${e}}`);
 }

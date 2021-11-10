@@ -2,7 +2,7 @@
   "name": "setup-environment",
   "version": "1.0.0",
   "description": "A GitHub Action to allow for setting environment variables for future steps",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/q4mobile/q4-platform",
   "author": "Trevor Elliott <trevore@q4inc.com>",
   "license": "MIT",
