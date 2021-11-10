@@ -1,0 +1,23 @@
+{
+  "name": "setup-environment",
+  "version": "1.0.0",
+  "description": "A GitHub Action to allow for setting environment variables for future steps",
+  "main": "src/index.js",
+  "repository": "https://github.com/q4mobile/q4-platform",
+  "author": "Trevor Elliott <trevore@q4inc.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "package": "ncc build --source-map",
+    "format": "prettier --write \"src/**/*.js\""
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.7",
+    "@vercel/ncc": "^0.29.0",
+    "prettier": "^2.3.0",
+    "typescript": "^4.3.5"
+  }
+}

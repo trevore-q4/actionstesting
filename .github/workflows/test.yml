@@ -4,26 +4,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  test_not_ephemeral:
-    name: Test Not Ephemeral
+  test:
+    name: Test
     runs-on: ubuntu-latest
   
     steps:
       - uses: actions/checkout@v2
 
-      - name: Test not ephemeral
-        uses: ./.github/actions/test
+      - name: Setup environment
+        uses: ./.github/actions/setup-environment
         with:
-          is_ephemeral: false
+          MY_ENV_VAR: my env var value
+          MY_OTHER_ENV_VAR: false
 
-  test_ephemeral:
-    name: Test Ephemeral
-    runs-on: ubuntu-latest
-  
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Test ephemeral
-        uses: ./.github/actions/test
-        with:
-          is_ephemeral: true
+      - name: Print env vars
+        shell: bash
+        run: |
+          echo $MY_ENV_VAR
+          echo $MY_OTHER_ENV_VAR

@@ -1,0 +1,5 @@
+name: 'Setup environment'
+description: A GitHub Action to allow for setting environment variables for future steps.
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
