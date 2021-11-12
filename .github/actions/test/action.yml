@@ -2,8 +2,8 @@ name: Test
 description: Test action
 
 inputs:
-  fail-on-error:
-    description: 'Fail on error'
+  continue-on-error:
+    description: 'Continue on error'
     required: true
     type: boolean
 
@@ -15,5 +15,5 @@ runs:
         exit 1
 
     - shell: bash
-      if: always() && inputs.fail-on-error
+      if: always() && inputs.continue-on-error == 'true'
       run: echo Success!
