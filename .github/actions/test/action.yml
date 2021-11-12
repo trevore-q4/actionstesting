@@ -4,17 +4,17 @@ description: Test action
 inputs:
   fail-on-error:
     description: 'Fail on error'
-    required: false
+    required: true
     type: boolean
 
 runs:
   using: "composite"
   steps:
     - shell: bash
-      continue-on-error: true
       run:
         echo Throwing an error
         exit 1
 
     - shell: bash
+      if: ${{ always() && !inputs.fail-on-error }}
       run: echo Success!
