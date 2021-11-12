@@ -18,6 +18,6 @@ runs:
         touch file2
 
     - shell: bash
-      working-directory: temp
-      run:
+      working-directory: test
+      run: |
         ls
