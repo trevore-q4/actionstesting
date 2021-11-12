@@ -2,35 +2,19 @@ name: Test
 description: Test action
 
 inputs:
-  is_ephemeral:
-    description: 'Is an ephemeral environment?'
-    required: true
+  fail-on-error:
+    description: 'Fail on error'
+    required: false
     type: boolean
 
 runs:
   using: "composite"
   steps:
-    # - shell: bash
-    #   env:
-    #     IS_EPHEMERAL: ${{ inputs.is_ephemeral }}
-    #   run: |
-    #     echo "TF_VAR_is_ephemeral=$IS_EPHEMERAL" >> $GITHUB_ENV
-
-    - name: Environment variables 
-      uses: q4mobile/branch-env-vars@v1.0.3 
-      with: 
-        bevOverwrite: true 
-        TF_VAR_is_ephemeral: | 
-          !default:${{ inputs.is_ephemeral }} 
+    - shell: bash
+      continue-on-error: !inputs.fail-on-error
+      run:
+        echo Throwing an error
+        exit 1
 
     - shell: bash
-      run: |
-        echo TF_VAR_is_ephemeral = $TF_VAR_is_ephemeral
-
-    - shell: bash
-      if: inputs.is_ephemeral == 'true'
-      run: echo is an ephemeral environment
-
-    - shell: bash
-      if: inputs.is_ephemeral == 'false'
-      run: echo is not an ephemeral environment
+      run: echo Success!
