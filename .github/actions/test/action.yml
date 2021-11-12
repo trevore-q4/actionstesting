@@ -15,5 +15,5 @@ runs:
         exit 1
 
     - shell: bash
-      if: ${{ always() && !inputs.fail-on-error }}
+      if: always()
       run: echo Success!
