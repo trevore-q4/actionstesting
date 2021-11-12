@@ -11,7 +11,7 @@ runs:
   using: "composite"
   steps:
     - shell: bash
-      continue-on-error: !inputs.fail-on-error
+      continue-on-error: true
       run:
         echo Throwing an error
         exit 1
