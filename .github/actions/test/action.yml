@@ -15,5 +15,5 @@ runs:
         exit 1
 
     - shell: bash
-      if: always()
+      if: always() && inputs.fail-on-error
       run: echo Success!
