@@ -11,7 +11,7 @@ runs:
   using: "composite"
   steps:
     - shell: bash
-      run:
+      run: |
         mkdir test
         cd test
         touch file1
