@@ -10,30 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - shell: bash
-        run: |
-          mkdir build
-          cd build
-          touch file1
-          touch file2
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: client-build
-          path: build
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: client-build
-          path: build2
-
-      - shell: bash
-        run: |
-          ls
-          cd build2
-          ls
-
-      # - name: Test
-      #   uses: ./.github/actions/test
-      #   with:
-      #     fail-task: true
+      - name: Test
+        uses: ./.github/actions/test

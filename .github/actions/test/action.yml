@@ -1,23 +1,23 @@
 name: Test
 description: Test action
 
-inputs:
-  fail-task:
-    description: 'Fail task'
-    required: true
-    type: boolean
+# inputs:
+#   fail-task:
+#     description: 'Fail task'
+#     required: true
+#     type: boolean
 
 runs:
   using: "composite"
   steps:
     - shell: bash
       run:
-        echo "TASK_FAILED=${{ inputs.fail-task }}" >> "$GITHUB_ENV"
+        mkdir temp
+        cd temp
+        touch file1
+        touch file2
 
     - shell: bash
-      if: env.TASK_FAILED == 'false'
-      run: echo Success!
-
-    - shell: bash
-      if: env.TASK_FAILED == 'true'
-      run: echo Failure!
+      working-directory: temp
+      run:
+        ls
