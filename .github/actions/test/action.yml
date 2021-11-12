@@ -12,8 +12,8 @@ runs:
   steps:
     - shell: bash
       run:
-        mkdir temp
-        cd temp
+        mkdir test
+        cd test
         touch file1
         touch file2
 
