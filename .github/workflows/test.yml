@@ -13,4 +13,4 @@ jobs:
       - name: Test
         uses: ./.github/actions/test
         with:
-          continue-on-error: true
+          fail-task: false

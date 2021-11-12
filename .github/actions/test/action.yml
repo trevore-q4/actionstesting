@@ -2,8 +2,8 @@ name: Test
 description: Test action
 
 inputs:
-  continue-on-error:
-    description: 'Continue on error'
+  fail-task:
+    description: 'Fail task'
     required: true
     type: boolean
 
@@ -12,8 +12,12 @@ runs:
   steps:
     - shell: bash
       run:
-        exit 1
+        export TASK_FAILED=${{ inputs.fail-task }}
 
     - shell: bash
-      if: always() && inputs.continue-on-error == 'true'
+      if: env.TASK_FAILED == 'false'
       run: echo Success!
+
+    - shell: bash
+      if: env.TASK_FAILED == 'true'
+      run: echo Failure!
