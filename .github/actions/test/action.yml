@@ -12,12 +12,12 @@ runs:
   steps:
     - shell: bash
       run:
-        export TASK_FAILED=${{ inputs.fail-task }}
+        echo "TASK_FAILED=${{ inputs.fail-task }}" >> "$GITHUB_ENV"
 
     - shell: bash
-      if: ${{ env.TASK_FAILED == 'false' }}
+      if: env.TASK_FAILED == 'false'
       run: echo Success!
 
     - shell: bash
-      if: ${{ env.TASK_FAILED == 'true' }}
+      if: env.TASK_FAILED == 'true'
       run: echo Failure!
