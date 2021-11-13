@@ -1,0 +1,29 @@
+# name: Destroy
+
+# on:
+#   pull_request:
+#     types: [closed, unlabeled]
+#     branches:
+#       - develop
+
+# jobs:
+#   deploy:
+#     name: Destroy
+#     runs-on: ubuntu-latest
+#     concurrency:
+#       group: ${{ github.ref }}
+#       cancel-in-progress: false
+
+#     steps:
+#       - name: Destroy
+#         shell: bash
+#         run: |
+#           echo Destroying...
+#           sleep 10s
+#           echo Destroy finished
+
+#       - uses: strumwolf/delete-deployment-environment@v2
+#         with:
+#           # ⚠️ The provided token needs permission for admin write:org
+#           token: ${{ secrets.TOKEN }}
+#           environment: qp103
