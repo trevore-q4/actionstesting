@@ -4,12 +4,13 @@ on:
   pull_request:
     types: [closed]
 
+concurrency:
+  group: deployment
+
 jobs:
   destroy:
     name: Destroy
     runs-on: ubuntu-latest
-    concurrency:
-      group: deployment
 
     steps:
       - run: sleep 1m
