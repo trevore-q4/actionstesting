@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, reopened, synchronize]
 
 concurrency:
   group: deployment
