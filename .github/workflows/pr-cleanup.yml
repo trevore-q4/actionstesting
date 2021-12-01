@@ -5,7 +5,7 @@ on:
     types: [closed, unlabeled]
 
 concurrency:
-  group: ${{ github.head_ref }}
+  group: ${{ github.ref }}
 
 jobs:
   destroy:
