@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [closed, unlabeled]
 
+concurrency:
+  group: ${{ github.head_ref }}
+
 jobs:
   destroy:
     name: Destroy
