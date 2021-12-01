@@ -1,0 +1,21 @@
+name: PR
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+concurrency:
+  group: ${{ github.head_ref }}
+  
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+  
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: |
+          sleep 60s
+          echo Done
+

@@ -1,0 +1,17 @@
+name: PR Cleanup
+
+on:
+  pull_request:
+    types: [closed, unlabeled]
+
+jobs:
+  destroy:
+    name: Destroy
+    runs-on: ubuntu-latest
+  
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: |
+          sleep 60s
+          echo Done
